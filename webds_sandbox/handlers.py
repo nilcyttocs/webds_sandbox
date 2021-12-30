@@ -6,6 +6,12 @@ from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
 import tornado
 
+import sys
+sys.path.append('/usr/local/syna/lib/python')
+from touchcomm import TouchComm
+
+tcm = None
+
 fib_go = True
 
 def fibonacci():
@@ -108,6 +114,48 @@ class FilesystemHandler(APIHandler):
         self.set_header('content-type', 'application/json')
         self.finish(json.dumps(data))
 
+class TouchcommHandler(APIHandler):
+    @tornado.web.authenticated
+    def get(self):
+        global tcm
+        if (tcm == None):
+            self.finish()
+            return
+        report = tcm.getReport()
+        image = report[1]['image']
+        image = image.tolist()
+        self.finish(json.dumps(image))
+
+    @tornado.web.authenticated
+    def post(self):
+        global tcm
+        input_data = self.get_json_body()
+        if (input_data['tcm'] == 'open'):
+            if (tcm != None):
+                tcm.close()
+                time.sleep(1)
+            tcm = TouchComm.make(protocols = 'report_streamer', server = '127.0.0.1', packratCachePath = '/var/cache/syna/packrat', streaming = False)
+            tcm.reset()
+            identify = tcm.identify()
+            appInfo = tcm.getAppInfo()
+            print(identify, flush = True)
+            print(appInfo, flush = True)
+            tcm.disableReport(17)
+            if (input_data['report'] == 'Delta Image'):
+                tcm.disableReport(19)
+                tcm.enableReport(18)
+            elif (input_data['report'] == 'Raw Image'):
+                tcm.disableReport(18)
+                tcm.enableReport(19)
+            data = {'numRows': appInfo['numRows'], 'numCols': appInfo['numCols']}
+            self.finish(json.dumps(data))
+        elif (input_data['tcm'] == 'close'):
+            if (tcm != None):
+                tcm.reset()
+                tcm.close()
+                tcm = None
+            self.finish()
+
 def setup_handlers(web_app):
     host_pattern = ".*$"
 
@@ -121,5 +169,6 @@ def setup_handlers(web_app):
     route_pattern = url_path_join(base_url, "webds-sandbox", "get_example")
     foobar_pattern = url_path_join(base_url, "webds-sandbox", "foobar")
     filesystem_pattern = url_path_join(base_url, "webds-sandbox", "filesystem")
-    handlers = [(route_pattern, RouteHandler), (foobar_pattern, FoobarHandler, dict(source=publisher, update=checker)), (filesystem_pattern, FilesystemHandler)]
+    touchcomm_pattern = url_path_join(base_url, "webds-sandbox", "touchcomm")
+    handlers = [(route_pattern, RouteHandler), (foobar_pattern, FoobarHandler, dict(source=publisher, update=checker)), (filesystem_pattern, FilesystemHandler), (touchcomm_pattern, TouchcommHandler)]
     web_app.add_handlers(host_pattern, handlers)
