@@ -11,11 +11,13 @@ import {
 
 import { ILauncher } from '@jupyterlab/launcher';
 
+import { WebDSService } from '@webds/service';
+
 import { foobarIcon } from './icons';
 
-import { FoobarWidget } from './widget';
+import { FoobarWidget } from './widget_container';
 
-import { requestAPI } from './handler';
+import { requestAPI } from './sandbox_handler';
 
 /**
  * Initialization data for the @webds/sandbox extension.
@@ -23,8 +25,8 @@ import { requestAPI } from './handler';
 const plugin: JupyterFrontEndPlugin<void> = {
   id: '@webds/sandbox:plugin',
   autoStart: true,
-  requires: [ILauncher, ILayoutRestorer],
-  activate: async (app: JupyterFrontEnd, launcher: ILauncher, restorer: ILayoutRestorer) => {
+  requires: [ILauncher, ILayoutRestorer, WebDSService],
+  activate: async (app: JupyterFrontEnd, launcher: ILauncher, restorer: ILayoutRestorer, service: WebDSService) => {
     console.log('JupyterLab extension @webds/sandbox is activated!');
 
     requestAPI<any>('get_example')
@@ -75,7 +77,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       },
       execute: () => {
         if (!widget || widget.isDisposed) {
-          const content = new FoobarWidget();
+          const content = new FoobarWidget(service);
           widget = new MainAreaWidget<FoobarWidget>({content});
           widget.id = 'webds_sandbox_foobar_widget';
           widget.title.label = 'Foobar';
