@@ -17,7 +17,7 @@ import { foobarIcon } from './icons';
 
 import { FoobarWidget } from './widget_container';
 
-import { requestAPI } from './sandbox_handler';
+import { sandboxAPI } from './handler';
 
 /**
  * Initialization data for the @webds/sandbox extension.
@@ -29,13 +29,13 @@ const plugin: JupyterFrontEndPlugin<void> = {
   activate: async (app: JupyterFrontEnd, launcher: ILauncher, restorer: ILayoutRestorer, service: WebDSService) => {
     console.log('JupyterLab extension @webds/sandbox is activated!');
 
-    requestAPI<any>('get_example')
+    sandboxAPI<any>('get_example')
     .then(data => {
       console.log(data);
     })
-    .catch(reason => {
+    .catch(error => {
       console.error(
-        `The webds_sandbox server extension appears to be missing.\n${reason}`
+        `The webds_sandbox server extension appears to be missing.\n${error}`
       );
     });
 
@@ -52,17 +52,17 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
     };
 
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 10));
 
     const dataToSend = {data: 'boo!'};
-    requestAPI<any>('foobar', {
+    sandboxAPI<any>('foobar', {
       body: JSON.stringify(dataToSend),
       method: 'POST'
     }).then(data=> {
       console.log(data);
-    }).catch(reason => {
+    }).catch(error => {
       console.error(
-        `Error on POST /webds-sandbox/foobar\n${reason}`
+        `Error - POST /webds-sandbox/foobar\n${error}`
       );
     });
 
