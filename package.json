@@ -56,6 +56,7 @@
     "@jupyterlab/ui-components": "^3.1.12",
     "@lumino/widgets": "^1.19.0",
     "@mui/icons-material": "~5.5.0",
+    "@mui/lab": "~5.0.0-alpha.74",
     "@mui/material": "~5.5.0",
     "@webds/service": "file:../webds_service",
     "jupyterlab-topbar": "^0.6.0",
