@@ -1,22 +1,68 @@
-import { ReactWidget } from '@jupyterlab/apputils';
-import React from 'react';
+import React, { useEffect, useState } from "react";
 
-import { WebDSService } from '@webds/service';
+import { ReactWidget } from "@jupyterlab/apputils";
 
-import { FoobarMui } from './widget_mui';
+import Alert from "@mui/material/Alert";
 
-const FoobarContainer = (props: any): JSX.Element => {
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { ThemeProvider } from "@mui/material/styles";
+
+import { WebDSService } from "@webds/service";
+
+import { Landing } from "./widget_landing";
+
+let alertMessage = "";
+
+const SandboxContainer = (props: any): JSX.Element => {
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const [alert, setAlert] = useState<boolean>(false);
+
+  const initialize = async () => {
+    setInitialized(true);
+  };
+
+  useEffect(() => {
+    initialize();
+  }, []);
+
   const webdsTheme = props.service.ui.getWebDSTheme();
 
   return (
-    <div className='jp-webds-widget-body'>
-      <FoobarMui theme={webdsTheme}/>
+    <div className="jp-webds-widget-body">
+      <ThemeProvider theme={webdsTheme}>
+        {initialized ? (
+          <Landing />
+        ) : (
+          <>
+            {alert && (
+              <Alert
+                severity="error"
+                onClose={() => setAlert(false)}
+                sx={{ whiteSpace: "pre-wrap" }}
+              >
+                {alertMessage}
+              </Alert>
+            )}
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)"
+              }}
+            >
+              <CircularProgress color="primary" />
+            </div>
+          </>
+        )}
+      </ThemeProvider>
     </div>
   );
 };
 
-export class FoobarWidget extends ReactWidget {
-  service: WebDSService|null = null;
+export class SandboxWidget extends ReactWidget {
+  service: WebDSService | null = null;
 
   constructor(service: WebDSService) {
     super();
@@ -25,8 +71,8 @@ export class FoobarWidget extends ReactWidget {
 
   render(): JSX.Element {
     return (
-      <div className='jp-webds-widget'>
-        <FoobarContainer service={this.service}/>
+      <div className="jp-webds-widget">
+        <SandboxContainer service={this.service} />
       </div>
     );
   }
