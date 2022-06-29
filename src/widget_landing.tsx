@@ -55,17 +55,16 @@ export const Landing = (props: any): JSX.Element => {
             bgcolor: "section.main"
           }}
         >
-          <Typography
-            variant="h1"
-            sx={{
+          <div
+            style={{
               position: "absolute",
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)"
             }}
           >
-            Content
-          </Typography>
+            <Typography variant="h1">Content</Typography>
+          </div>
         </Box>
         <Box
           sx={{
@@ -75,17 +74,16 @@ export const Landing = (props: any): JSX.Element => {
             bgcolor: "section.main"
           }}
         >
-          <Typography
-            variant="h3"
-            sx={{
+          <div
+            style={{
               position: "absolute",
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)"
             }}
           >
-            Controls
-          </Typography>
+            <Typography variant="h3">Controls</Typography>
+          </div>
         </Box>
       </Stack>
     </>
