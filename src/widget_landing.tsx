@@ -10,6 +10,8 @@ const HEIGHT_TITLE = 70;
 const HEIGHT_CONTENT = 450;
 const HEIGHT_CONTROLS = 120;
 
+const showHelp = true;
+
 export const Landing = (props: any): JSX.Element => {
   return (
     <>
@@ -33,19 +35,21 @@ export const Landing = (props: any): JSX.Element => {
           >
             Extension Title
           </Typography>
-          <Button
-            variant="text"
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "8px",
-              transform: "translate(0%, -50%)"
-            }}
-          >
-            <Typography variant="body2" sx={{ textDecoration: "underline" }}>
-              Help
-            </Typography>
-          </Button>
+          {showHelp && (
+            <Button
+              variant="text"
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "16px",
+                transform: "translate(0%, -50%)"
+              }}
+            >
+              <Typography variant="body2" sx={{ textDecoration: "underline" }}>
+                Help
+              </Typography>
+            </Button>
+          )}
         </Box>
         <Box
           sx={{
