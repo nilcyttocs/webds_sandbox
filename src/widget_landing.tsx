@@ -54,40 +54,34 @@ export const Landing = (props: any): JSX.Element => {
         <Box
           sx={{
             width: WIDTH + "px",
-            height: HEIGHT_CONTENT + "px",
+            minHeight: HEIGHT_CONTENT + "px",
+            boxSizing: "border-box",
+            padding: "24px",
             position: "relative",
-            bgcolor: "section.main"
+            bgcolor: "section.main",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center"
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)"
-            }}
-          >
-            <Typography variant="h1">Content</Typography>
-          </div>
+          <Typography variant="h1">Content</Typography>
         </Box>
         <Box
           sx={{
             width: WIDTH + "px",
-            height: HEIGHT_CONTROLS + "px",
+            minHeight: HEIGHT_CONTROLS + "px",
+            boxSizing: "border-box",
+            padding: "24px",
             position: "relative",
-            bgcolor: "section.main"
+            bgcolor: "section.main",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center"
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)"
-            }}
-          >
-            <Typography variant="h3">Controls</Typography>
-          </div>
+          <Typography variant="h3">Controls</Typography>
         </Box>
       </Stack>
     </>

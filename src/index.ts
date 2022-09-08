@@ -10,9 +10,18 @@ import { ILauncher } from "@jupyterlab/launcher";
 
 import { WebDSService, WebDSWidget } from "@webds/service";
 
-import { foobarIcon } from "./icons";
+import { sandboxIcon } from "./icons";
 
 import { SandboxWidget } from "./widget_container";
+
+namespace Attributes {
+  export const command = "webds_sandbox:open";
+  export const id = "webds_sandbox_widget";
+  export const label = "Sandbox";
+  export const caption = "Sandbox";
+  export const category = "DSDK - Applications";
+  export const rank = 999;
+}
 
 /**
  * Initialization data for the @webds/sandbox extension.
@@ -21,7 +30,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
   id: "@webds/sandbox:plugin",
   autoStart: true,
   requires: [ILauncher, ILayoutRestorer, WebDSService],
-  activate: async (
+  activate: (
     app: JupyterFrontEnd,
     launcher: ILauncher,
     restorer: ILayoutRestorer,
@@ -31,20 +40,20 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
     let widget: WebDSWidget;
     const { commands, shell } = app;
-    const command: string = "webds_sandbox_foobar:open";
+    const command = Attributes.command;
     commands.addCommand(command, {
-      label: "Foobar",
-      caption: "Foobar",
+      label: Attributes.label,
+      caption: Attributes.caption,
       icon: (args: { [x: string]: any }) => {
-        return args["isLauncher"] ? foobarIcon : undefined;
+        return args["isLauncher"] ? sandboxIcon : undefined;
       },
       execute: () => {
         if (!widget || widget.isDisposed) {
-          const content = new SandboxWidget(service);
+          const content = new SandboxWidget(Attributes.id, service);
           widget = new WebDSWidget<SandboxWidget>({ content });
-          widget.id = "webds_sandbox_foobar_widget";
-          widget.title.label = "Foobar";
-          widget.title.icon = foobarIcon;
+          widget.id = Attributes.id;
+          widget.title.label = Attributes.label;
+          widget.title.icon = sandboxIcon;
           widget.title.closable = true;
         }
 
@@ -53,15 +62,22 @@ const plugin: JupyterFrontEndPlugin<void> = {
         if (!widget.isAttached) shell.add(widget, "main");
 
         shell.activateById(widget.id);
+
+        widget.setShadows();
       }
     });
 
-    launcher.add({ command, args: { isLauncher: true }, category: "WebDS" });
+    launcher.add({
+      command,
+      args: { isLauncher: true },
+      category: Attributes.category,
+      rank: Attributes.rank
+    });
 
     let tracker = new WidgetTracker<WebDSWidget>({
-      namespace: "webds_sandbox_foobar"
+      namespace: Attributes.id
     });
-    restorer.restore(tracker, { command, name: () => "webds_sandbox_foobar" });
+    restorer.restore(tracker, { command, name: () => Attributes.id });
   }
 };
 

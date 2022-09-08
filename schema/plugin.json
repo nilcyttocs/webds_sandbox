@@ -9,7 +9,7 @@
         "rank": 80, 
         "items": [
           {
-            "command": "webds_sandbox_foobar:open"
+            "command": "webds_sandbox:open"
           }
         ]
       }
