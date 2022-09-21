@@ -4,7 +4,7 @@
   "jupyter.lab.menus": {
     "main": [
       {
-        "id": "jp-mainmenu-webds-menu",
+        "id": "jp-mainmenu-webds-foobar-menu",
         "label": "Foobar",
         "rank": 90, 
         "items": [
