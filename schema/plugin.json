@@ -1,12 +1,12 @@
 {
-  "title": "WebDS",
-  "description": "WebDS settings.",
+  "title": "Foobar",
+  "description": "Foobar",
   "jupyter.lab.menus": {
     "main": [
       {
-        "id": "jp-mainmenu-webds-menu",
-        "label": "WebDS",
-        "rank": 80, 
+        "id": "jp-mainmenu-foobar-menu",
+        "label": "Foobar",
+        "rank": 90, 
         "items": [
           {
             "command": "webds_sandbox:open"
