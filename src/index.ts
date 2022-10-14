@@ -12,7 +12,7 @@ import { WebDSService, WebDSWidget } from "@webds/service";
 
 import { sandboxIcon } from "./icons";
 
-import { SandboxWidget } from "./widget_container";
+import SandboxWidget from "./widget/SandboxWidget";
 
 namespace Attributes {
   export const command = "webds_sandbox:open";
